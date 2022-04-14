@@ -4,20 +4,20 @@ import random
 import time
 
 
-def findMergeLine(_lines, _p0, _p1, _vertical):
+def findMergeLine(_lines, _p0, _p1, _is_vertical):
     indz = 0
     for k in _p1:
-        mark, mindis = minDistance(_lines[_p0], _lines[k], _vertical)
+        mark, mindis = minDistance(_lines[_p0], _lines[k], _is_vertical)
         if mark or mindis <= 10:
             return True, indz, k
         indz = indz + 1
     return False, 0, 0
 
 
-def minDistance(_line_0, _line_1, _vertical):
+def minDistance(_line_0, _line_1, _is_vertical):
     _x0_0, _y0_0, _x1_0, _y1_0, _, _ = _line_0
     _x0_1, _y0_1, _x1_1, _y1_1, _, _ = _line_1
-    if _vertical:
+    if _is_vertical:
         min_0, max_0 = min(_y0_0, _y1_0), max(_y0_0, _y1_0)
         min_1, max_1 = min(_y0_1, _y1_1), max(_y0_1, _y1_1)
         if min_1 <= _y0_0 <= max_1 or min_1 <= _y1_0 <= max_1 or min_0 <= _y0_1 <= max_0 or min_0 <= _y1_1 <= max_0:
@@ -35,7 +35,7 @@ def minDistance(_line_0, _line_1, _vertical):
     return False, np.min(distance)
 
 
-def merge(_lines, _vertical):
+def merge(_lines, _is_vertical):
     for i in range(0, len(_lines)):
         temp = []
         for j in range(i + 1, len(_lines)):
@@ -45,7 +45,7 @@ def merge(_lines, _vertical):
                 temp.append(j)
         inds = []
         while temp:
-            flage, index0, index1 = findMergeLine(_lines, i, temp, _vertical)
+            flage, index0, index1 = findMergeLine(_lines, i, temp, _is_vertical)
             if not flage:
                 break
             line = np.array([_lines[i], _lines[index1]])
