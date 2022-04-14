@@ -74,11 +74,11 @@ if __name__ == '__main__':
     img[:, :, 2] = gray
     # 创建一个LSD对象
     lsd = cv2.createLineSegmentDetector(scale=1)
-    # 执行检测结果
     dlines = lsd.detect(gray)
     lines = dlines[0].reshape(-1, 4)
     vertical = []
     horizontal = []
+    # 将直线分为两类
     for a in lines:
         x0, y0, x1, y1 = a
         theta = np.arctan((y1 - y0) / (x1 - x0 + np.spacing(1))) * 180 / np.pi
@@ -91,6 +91,7 @@ if __name__ == '__main__':
                 theta += 180
             vertical.append([x0, y0, x1, y1, theta, b])
     outlines = []
+    # 合并直线
     outlines.extend(merge(horizontal, False))
     outlines.extend(merge(vertical, True))
     out = np.zeros_like(img, np.uint8)
